@@ -1,0 +1,9 @@
+{
+  "mode": "LIVE_READ",
+  "collection": "Relics of the Null Orbit",
+  "supply": 333,
+  "price_eth": 0.033,
+  "network": "base-sepolia",
+  "chain_id": 84532,
+  "broadcast": false
+}

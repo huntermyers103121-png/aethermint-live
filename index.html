@@ -1,0 +1,71 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AetherMint Live — Relics of the Null Orbit</title>
+<style>
+  :root { color-scheme: dark; --teal:#7ee0d2; --ink:#d7dde8; --dim:#8b93a2; --bg:#07080b; --card:#10131a; --line:#1d2430; }
+  * { box-sizing: border-box; }
+  body { margin:0; font: 15px/1.45 ui-sans-serif, system-ui, sans-serif; background:var(--bg); color:var(--ink); }
+  header { padding:28px 20px 8px; letter-spacing:.2em; text-transform:uppercase; font-size:11px; color:var(--teal); }
+  h1 { margin:0 20px 8px; font-weight:550; font-size: clamp(28px, 6vw, 44px); }
+  .lede { margin:0 20px 22px; color:var(--dim); max-width: 40rem; }
+  .row { display:flex; gap:12px; flex-wrap:wrap; padding:0 20px 22px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:14px 16px; min-width:140px; flex:1; }
+  .card b { display:block; color:var(--dim); font-size:10px; letter-spacing:.16em; text-transform:uppercase; }
+  .card .v { font-size:22px; margin-top:6px; }
+  .ok { color:var(--teal); }
+  .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:14px; padding:0 20px 40px; }
+  figure { margin:0; background:var(--card); border:1px solid var(--line); border-radius:18px; overflow:hidden; }
+  figure img { width:100%; aspect-ratio: 2/3; object-fit:cover; display:block; background:#000; }
+  figcaption { padding:12px 14px 16px; }
+  figcaption strong { display:block; }
+  figcaption span { color:var(--dim); font-size:13px; }
+  .note { margin:0 20px 40px; color:var(--dim); max-width:40rem; font-size:13px; }
+  a { color:var(--teal); }
+</style>
+<header>AetherMint Collective · live work surface</header>
+<h1>Relics of the Null Orbit</h1>
+<p class="lede">Live tape. Live Base Sepolia head. Three relics on the table. No key on this page. No broadcast from this page.</p>
+<div class="row" id="tape"></div>
+<div class="grid">
+  <figure>
+    <img src="relics/1.jpg" alt="Relic #1">
+    <figcaption><strong>#1 Iridium Shell</strong><span>Smoked Quartz · Unmarked · Vacuum Dust</span></figcaption>
+  </figure>
+  <figure>
+    <img src="relics/2.jpg" alt="Relic #2">
+    <figcaption><strong>#2 Carbon Lattice</strong><span>Dead Amber · Frayed Gold · Partial Manifest</span></figcaption>
+  </figure>
+  <figure>
+    <img src="relics/3.jpg" alt="Relic #3">
+    <figcaption><strong>#3 Heat-Stained Ceramic</strong><span>Oxide Bloom · Copper Fatigue · Re-entry Char</span></figcaption>
+  </figure>
+</div>
+<p class="note">333 relics. Sticker 0.033 ETH. Artist reserve 33. Launch board remains conditional go for simulation and public testnet only. Mainnet stays locked until a human signs outside this orchestra. Repo: https://github.com/huntermyers103121-png/aethermint-live</p>
+<script>
+const rpc = "https://sepolia.base.org";
+const cards = (items) => items.map(([b,v,ok]) => `<div class="card"><b>${b}</b><div class="v ${ok?'ok':''}">${v}</div></div>`).join("");
+async function tape(){
+  const out = [];
+  try {
+    const r = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=ethereum,bitcoin,solana&vs_currencies=usd&include_24hr_change=true");
+    const j = await r.json();
+    const row = (id,sym) => {
+      const u = j[id]?.usd, c = j[id]?.usd_24h_change;
+      return [sym, u==null ? "\u2014" : `$${Number(u).toLocaleString(undefined,{maximumFractionDigits:2})}${c==null?"":` ${c>=0?"+":""}${c.toFixed(2)}%`}`, true];
+    };
+    out.push(["sensor","LIVE",true], row("ethereum","ETH"), row("bitcoin","BTC"), row("solana","SOL"));
+  } catch(e) { out.push(["sensor","TAPE DARK",false]); }
+  try {
+    const r = await fetch(rpc, {method:"POST", headers:{"content-type":"application/json"}, body: JSON.stringify({jsonrpc:"2.0",id:1,method:"eth_blockNumber",params:[]})});
+    const j = await r.json();
+    const block = parseInt(j.result, 16);
+    const g = await fetch(rpc, {method:"POST", headers:{"content-type":"application/json"}, body: JSON.stringify({jsonrpc:"2.0",id:1,method:"eth_gasPrice",params:[]})});
+    const gj = await g.json();
+    const gwei = parseInt(gj.result,16)/1e9;
+    out.push(["base sepolia", block.toLocaleString(), true], ["gas", gwei+" gwei", true], ["broadcast","OFF",true]);
+  } catch(e) { out.push(["chain","HEAD DARK",false], ["broadcast","OFF",true]); }
+  document.getElementById("tape").innerHTML = cards(out);
+}
+tape(); setInterval(tape, 20000);
+</script>
