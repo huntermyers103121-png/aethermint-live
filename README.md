@@ -1,10 +1,14 @@
-# AetherMint Live
+# AetherMint live
 
-Public work surface for **Relics of the Null Orbit**.
+Public work surface for Relics of the Null Orbit.
 
-- Live ETH/BTC/SOL from CoinGecko
-- Live Base Sepolia block + gas from `https://sepolia.base.org`
-- No private keys
-- No transaction broadcast
+- Live market tape in the browser
+- Read-only Base Sepolia probe in the browser
+- Six photographed relics, 333 catalogued trait rolls
+- Unsigned deploy script only
 
-Open `index.html` or enable GitHub Pages on this repo (Settings → Pages → Deploy from main).
+This repo does not hold a private key and does not broadcast a transaction.
+
+Board: CONDITIONAL GO — simulation / Base Sepolia only.
+
+Live page: https://aethermint-live-eco-salvation.vercel.app

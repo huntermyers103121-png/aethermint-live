@@ -2,8 +2,13 @@
   "mode": "LIVE_READ",
   "collection": "Relics of the Null Orbit",
   "supply": 333,
+  "rendered": 6,
   "price_eth": 0.033,
   "network": "base-sepolia",
   "chain_id": 84532,
-  "broadcast": false
+  "block_at_mission_open": 47403666,
+  "gas_gwei_at_mission_open": 0.006,
+  "broadcast": false,
+  "board": "CONDITIONAL GO — SIMULATION / TESTNET ONLY",
+  "mission": "20260928-060701-0adb50"
 }
